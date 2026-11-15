@@ -1,0 +1,163 @@
+GIT COMMANDS USED IN THIS ASSIGNMENT
+====================================
+Repository: https://github.com/Ishan007-bot/git-workflow-assignment
+
+------------------------------------------------------------
+STEP 1: LOCAL REPOSITORY SETUP
+------------------------------------------------------------
+mkdir git-workflow-demo
+    Creates the project folder on the local machine.
+
+cd git-workflow-demo
+    Moves into the project folder so that all following commands run inside it.
+
+git init -b main
+    Initializes a new, empty Git repository in the current folder and names
+    the default branch "main".
+
+git status
+    Shows the state of the working directory: which files are untracked,
+    modified or staged for the next commit.
+
+------------------------------------------------------------
+STEP 2: GIT WORKFLOW EXECUTION
+------------------------------------------------------------
+git add index.html about.html
+    Stages the two HTML files so that they are included in the next commit.
+
+git commit -m "Initial commit: add index.html and about.html"
+    Records the staged files as the first snapshot (commit) of the project,
+    with a descriptive message.
+
+git log --oneline
+    Lists the commit history, one commit per line (short hash + message).
+
+git status --short
+    Shows the working directory state in a compact form (M = modified).
+
+git diff
+    Shows the exact line-by-line changes made to files that are not yet staged.
+
+git add index.html
+    Stages the modified index.html for the second commit.
+
+git commit -m "Update home page description in index.html"
+    Creates the second commit containing the change to index.html.
+
+git branch feature
+    Creates a new branch named "feature" pointing at the current commit.
+
+git branch
+    Lists all local branches; the current branch is marked with "*".
+
+git checkout feature
+    Switches the working directory to the "feature" branch.
+
+git add about.html
+    Stages the change made to about.html on the feature branch.
+
+git commit -m "Add skills section to about.html (feature branch)"
+    Commits the change on the feature branch only; main is not affected.
+
+git log --oneline --all --graph
+    Shows the history of all branches as a text graph.
+
+git checkout main
+    Switches back to the main branch.
+
+git merge --no-ff feature -m "Merge branch 'feature' into main"
+    Merges the feature branch into main. --no-ff forces a merge commit so the
+    branch activity remains visible in the history.
+
+git log --oneline --graph --all --decorate
+    Displays the complete commit history of all branches as a graph, with
+    branch names (HEAD, main, feature) shown next to the commits.
+
+git log --stat
+    Displays the full commit history (hash, author, date, message) along with
+    the files changed and number of lines added/removed in each commit.
+
+------------------------------------------------------------
+STEP 3: .gitignore IMPLEMENTATION
+------------------------------------------------------------
+(.gitignore file created with the rules:  *.log  and  temp/ )
+
+git status
+    Used to verify that debug.log and the temp/ folder do NOT appear as
+    untracked files, i.e. they are being ignored.
+
+git check-ignore -v debug.log temp/notes.txt
+    Confirms that the given paths are ignored and shows which line of
+    .gitignore is responsible for ignoring each one.
+
+git add .gitignore
+    Stages the .gitignore file.
+
+git commit -m "Add .gitignore to ignore *.log files and temp/ folder"
+    Commits the .gitignore file to the repository.
+
+------------------------------------------------------------
+STEP 4: UNDO OPERATION
+------------------------------------------------------------
+git add contact.html
+    Stages a new file, contact.html, for the extra commit.
+
+git commit -m "Add contact.html (to be undone)"
+    Makes the additional commit that will be undone.
+
+git log --oneline -3
+    Shows the last 3 commits to confirm the extra commit exists.
+
+git revert HEAD --no-edit
+    Undoes the last commit by creating a NEW commit that reverses its changes
+    (contact.html is deleted). History is preserved, which makes this the safe
+    way to undo a commit that is (or will be) shared on GitHub.
+    --no-edit uses the default "Revert ..." commit message.
+
+git log --oneline -4
+    Shows that the original commit and the revert commit are both in history.
+
+(Alternative, not used: git reset --hard HEAD~1 would remove the last commit
+ from history entirely. It rewrites history, so it is unsafe for pushed work.)
+
+------------------------------------------------------------
+STEP 5: GITHUB INTEGRATION
+------------------------------------------------------------
+gh repo create git-workflow-assignment --public --description "..."
+    (GitHub CLI) Creates a new, empty PUBLIC repository on GitHub. This was
+    done only after all local work, as the assignment requires.
+
+git remote add origin https://github.com/Ishan007-bot/git-workflow-assignment.git
+    Connects the local repository to the GitHub repository under the name
+    "origin".
+
+git remote -v
+    Lists the configured remotes and their fetch/push URLs to verify the
+    connection.
+
+git push -u origin main
+    Uploads the main branch with its full commit history to GitHub and sets
+    origin/main as its upstream (tracking) branch.
+
+git push -u origin feature
+    Uploads the feature branch to GitHub as well, so branch activity is
+    visible there.
+
+git branch -a
+    Lists all local and remote-tracking branches to confirm the push.
+
+------------------------------------------------------------
+STEP 6: COMMAND DOCUMENTATION FILE
+------------------------------------------------------------
+git add git_commands.txt
+    Stages this documentation file.
+
+git commit -m "Add git_commands.txt documenting all commands used"
+    Commits the documentation file.
+
+git push
+    Pushes the new commit to GitHub (uses the upstream set by "push -u").
+
+git log --oneline --graph --all --decorate
+    Shows the final history, including remote branches (origin/main,
+    origin/feature), to confirm local and GitHub are in sync.
